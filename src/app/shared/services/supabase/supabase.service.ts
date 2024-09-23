@@ -29,11 +29,12 @@ export class SupabaseService {
     return this._session;
   }
 
-  signIn(email: string, password: string) {
+  async signIn(email: string, password: string) {
     return this.supabase.auth.signInWithPassword({ email, password });
   }
 
   signOut() {
+    localStorage.setItem('authorization', '');
     return this.supabase.auth.signOut();
   }
 
@@ -42,5 +43,9 @@ export class SupabaseService {
       email,
       password,
     });
+  }
+
+  isLoggedIn() {
+    return !!localStorage.getItem('authorization');
   }
 }

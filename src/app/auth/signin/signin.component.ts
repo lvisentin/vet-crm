@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { SupabaseService } from '../../shared/services/supabase/supabase.service';
 import { NgClass } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -33,9 +33,14 @@ export class SigninComponent {
     private readonly formBuilder: FormBuilder,
     private readonly supabaseService: SupabaseService,
     private readonly toastr: ToastrService,
+    private readonly router: Router
   ) {}
 
   ngOnInit() {
+    if (this.supabaseService.isLoggedIn()) {
+      this.router.navigate(['/internal/dashboard']);
+    }
+
     this.signInForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -47,9 +52,13 @@ export class SigninComponent {
       this.loading = true;
       const email = this.signInForm.value.email;
       const password = this.signInForm.value.password;
-      const { error } = await this.supabaseService.signIn(email, password);
+      const {
+        error,
+        data: { session },
+      } = await this.supabaseService.signIn(email, password);
       if (error) throw error;
       this.toastr.success('Login feito');
+      localStorage.setItem('authorization', session?.access_token!);
     } catch (e) {
       this.toastr.error('Login ou senha incorretos');
       throw e;
