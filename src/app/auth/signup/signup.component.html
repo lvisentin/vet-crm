@@ -1,1 +1,81 @@
-<p>signup works!</p>
+<main class="flex items-center justify-center h-full w-full">
+  <div class="card bg-base-100 w-96 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title text-center">Criar conta</h2>
+
+      <form [formGroup]="signUpForm" class="mb-2" (ngSubmit)="onSubmit()">
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text">Email</span>
+          </div>
+          <input
+            type="email"
+            placeholder="Digite seu email"
+            formControlName="email"
+            class="input input-bordered w-full max-w-xs"
+            [ngClass]="
+              email?.invalid && (email?.dirty || email?.touched)
+                ? 'input-error'
+                : ''
+            "
+          />
+          @if(email?.invalid && (email?.dirty || email?.touched)) {
+          <div class="label">
+            @if(email?.hasError('required')) {
+            <span class="label-text-alt text-error"
+              >Por favor, digite um email</span
+            >
+            } @if(email?.hasError('email')) {
+            <span class="label-text-alt text-error"
+              >Por favor, digite um email válido</span
+            >
+            }
+          </div>
+          }
+        </label>
+
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text">Senha</span>
+          </div>
+          <input
+            type="password"
+            placeholder="Digite sua senha"
+            formControlName="password"
+            class="input input-bordered w-full max-w-xs"
+            [ngClass]="
+              password?.invalid && (password?.dirty || password?.touched)
+                ? 'input-error'
+                : ''
+            "
+          />
+          @if(password?.invalid && (password?.dirty || password?.touched)) {
+          <div class="label">
+            @if(password?.hasError('required')) {
+            <span class="label-text-alt text-error"
+              >Por favor, digite sua senha</span
+            >
+            } @if(password?.hasError('minlength')) {
+            <span class="label-text-alt text-error"
+              >Sua senha deve ter no mínimo 6 caracteres</span
+            >
+            }
+          </div>
+          }
+        </label>
+
+        <div class="card-actions justify-center mt-4">
+          <button
+            class="btn btn-primary w-full"
+            type="submit"
+          >
+            @if(loading) {
+            <span class="loading loading-spinner loading-md"></span>
+            } @else { Criar conta }
+          </button>
+          <a routerLink="/auth/signIn" class="text-center underline">Entrar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
