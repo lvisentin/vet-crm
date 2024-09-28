@@ -1,0 +1,13 @@
+<div class="flex flex-col w-full h-full min-h-screen">
+  <app-header> </app-header>
+
+  <main class="p-4">
+    <ag-grid-angular
+      [rowData]="rowData"
+      [defaultColDef]="defaultColDef"
+      style="height: 500px; width: 100%"
+      class="ag-theme-quartz"
+      [columnDefs]="colDefs"
+    />
+  </main>
+</div>
