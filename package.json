@@ -22,6 +22,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "ag-grid-angular": "^32.2.0",
     "ag-grid-community": "^32.2.0",
+    "ngx-mask": "^18.0.0",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

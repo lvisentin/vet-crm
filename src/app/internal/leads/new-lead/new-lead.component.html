@@ -3,8 +3,55 @@
 
   <main class="py-4 px-2">
     <div class="pageTitle prose">
-        <h2>Criar novo lead</h2>
+      <h2>Criar novo lead</h2>
     </div>
-    
+    <form [formGroup]="newLeadForm"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col gap-4 py-4 max-w-md">
+      <input type="text"
+        placeholder="Digite seu nome"
+        formControlName="name"
+        class="input input-bordered w-full"
+        [ngClass]="
+        name?.invalid && (name?.dirty || name?.touched)
+          ? 'input-error'
+          : ''
+      " />
+      @if(name?.invalid && (name?.dirty || name?.touched)) {
+      <div class="label p-0">
+        @if(name?.hasError('required')) {
+        <span class="label-text-alt text-error">Por favor, digite um nome</span>
+        }
+      </div>
+      }
+      <input type="text"
+        placeholder="Digite seu telefone"
+        formControlName="phone"
+        mask="(00) 00000-0000"
+        class="input input-bordered w-full"
+        [ngClass]="
+        phone?.invalid && (phone?.dirty || phone?.touched)
+          ? 'input-error'
+          : ''
+      " />
+      @if(phone?.invalid && (phone?.dirty || phone?.touched)) {
+      <div class="label p-0">
+        @if(phone?.hasError('mask')) {
+        <span class="label-text-alt text-error">Por favor, digite um telefone válido</span>
+        }
+        @if(phone?.hasError('required')) {
+        <span class="label-text-alt text-error">Por favor, digite um telefone</span>
+        }
+      </div>
+      }
+
+      <button class="btn btn-primary w-full"
+        type="submit">
+        @if(loading) {
+        <span class="loading loading-spinner loading-md"></span>
+        } @else { Entrar }
+      </button>
+
+    </form>
   </main>
 </div>

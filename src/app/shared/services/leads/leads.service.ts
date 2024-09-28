@@ -22,4 +22,8 @@ export class LeadsService {
       .from(LEADS_TABLE)
       .select(`id, name, phone, created_at`);
   }
+
+  async createLead({ name, phone }: { name: string, phone: string }) {
+    return await this.supabase.from(LEADS_TABLE).insert({ name, phone });
+  }
 }
