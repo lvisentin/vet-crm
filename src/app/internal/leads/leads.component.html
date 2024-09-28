@@ -1,13 +1,24 @@
 <div class="flex flex-col w-full h-full min-h-screen">
   <app-header> </app-header>
 
-  <main class="p-4">
+  <main class="py-4 px-2">
+    <button
+      class="btn btn-primary mb-4"
+      type="button"
+      routerLink="/internal/leads/new"
+    >
+      Novo Lead
+    </button>
+    @if(leadsData$ | async; as leadsData) {
     <ag-grid-angular
-      [rowData]="rowData"
+      [rowData]="leadsData"
       [defaultColDef]="defaultColDef"
       style="height: 500px; width: 100%"
       class="ag-theme-quartz"
       [columnDefs]="colDefs"
     />
+    }@else {
+    <span class="loading loading-spinner loading-md"></span>
+    }
   </main>
 </div>

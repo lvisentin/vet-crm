@@ -2,31 +2,39 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { AgGridAngular, AgGridModule } from 'ag-grid-angular'; // Angular Data Grid Component
 import { ColDef } from 'ag-grid-community'; // Column Definition Type Interface
+import { LeadsService } from '../../shared/services/leads/leads.service';
+import { from, map, Observable, of } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-leads',
   standalone: true,
-  imports: [HeaderComponent, AgGridAngular, AgGridModule],
+  imports: [
+    HeaderComponent,
+    AgGridAngular,
+    AgGridModule,
+    AsyncPipe,
+    RouterLink,
+  ],
   templateUrl: './leads.component.html',
   styleUrl: './leads.component.scss',
 })
 export class LeadsComponent {
-  rowData = [
-    { make: 'Tesla', model: 'Model Y', price: 64950, electric: true },
-    { make: 'Ford', model: 'F-Series', price: 33850, electric: false },
-    { make: 'Toyota', model: 'Corolla', price: 29600, electric: false },
-  ];
+  public leadsData$: Observable<any> = of([]);
 
   defaultColDef = {
     flex: 1,
-    minWidth: 100
-  }
+    minWidth: 100,
+  };
 
-  // Column Definitions: Defines the columns to be displayed.
-  colDefs: ColDef[] = [
-    { field: 'make' },
-    { field: 'model' },
-    { field: 'price' },
-    { field: 'electric' },
-  ];
+  colDefs: ColDef[] = [{ field: 'id' }, { field: 'name' }, { field: 'phone' }];
+
+  constructor(private readonly leadsService: LeadsService) {}
+
+  ngOnInit() {
+    this.leadsData$ = from(this.leadsService.getLeads()).pipe(
+      map(({ data }) => data)
+    );
+  }
 }
